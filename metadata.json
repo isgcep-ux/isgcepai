@@ -1,0 +1,6 @@
+{
+  "name": "İSG Cep Akademi",
+  "description": "İş Sağlığı ve Güvenliği Sınav Hazırlık, ÖSYM Denemeleri, Mevzuat Kütüphanesi, Hesaplama Araçları ve AI Asistanı",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
