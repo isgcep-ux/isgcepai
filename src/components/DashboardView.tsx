@@ -22,6 +22,7 @@ import {
 import { ExamType, Question, QuestionTopic, UserStats } from '../types';
 import { EXAM_TYPES_CONFIG, QUESTIONS_BANK } from '../data/questionsData';
 import { TopicSuccessChart } from './TopicSuccessChart';
+import { TopicMasteryRadarCard } from './TopicMasteryRadarCard';
 import { ExamProgressChart } from './ExamProgressChart';
 import { AchievementBadgesSection } from './AchievementBadgesSection';
 import { AIStudyRecommendationCard } from './AIStudyRecommendationCard';
@@ -234,7 +235,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         onStartNewExam={() => setActiveTab('exam-simulator')}
       />
 
-      {/* Konu Bazlı Başarı Oranı Grafiği (Recharts Visualization: Radar & Bar Chart) */}
+      {/* topicMastery Radar Analizi: Müfredat Hakimiyeti & Öncelikli Çalışma Rehberi (Recharts RadarChart) */}
+      <TopicMasteryRadarCard
+        userStats={userStats}
+        onSelectTopicForPractice={(topicKey) => {
+          if (onSelectTopicForPractice) {
+            onSelectTopicForPractice(topicKey);
+          } else {
+            setActiveTab('questions');
+          }
+        }}
+        onNavigateToAIAssistant={(initialQuestion) => {
+          setActiveTab('ai-assistant');
+        }}
+        onNavigateToFlashcards={() => setActiveTab('flashcards')}
+      />
+
+      {/* Konu Bazlı Başarı Oranı Grafiği (Recharts Visualization: Bar Chart) */}
       <TopicSuccessChart
         userStats={userStats}
         onSelectTopicForPractice={(topicKey) => {
