@@ -106,6 +106,20 @@ export interface DailyActivityItem {
   target?: number;
 }
 
+export interface DailyTipItem {
+  id: string;
+  type: 'mevzuat' | 'pratik_bilgi' | 'osym_tuzak';
+  typeLabel: string;
+  topic: QuestionTopic;
+  title: string;
+  keyRule: string;
+  explanation: string;
+  legalBasis: string;
+  mnemonic?: string;
+  examTip?: string;
+  tags?: string[];
+}
+
 export interface UserStats {
   totalAnswered: number;
   totalCorrect: number;

@@ -28,6 +28,7 @@ import { AIStudyRecommendationCard } from './AIStudyRecommendationCard';
 import { PDFReportModal } from './PDFReportModal';
 import { ExamCountdownCard } from './ExamCountdownCard';
 import { DailyActivityPanel } from './DailyActivityPanel';
+import { DailyTipCard } from './DailyTipCard';
 
 interface DashboardViewProps {
   selectedExamType: ExamType;
@@ -188,6 +189,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           <div className="text-[11px] text-slate-400 mt-1">Kayıtlı ezber kartı</div>
         </div>
       </div>
+
+      {/* Günlük İpucu: Önemli Kavramları, Kanun Maddelerini ve Pratik Şifreleri Hatırlatan Kart */}
+      <DailyTipCard
+        onSelectTopicForPractice={(topic) => {
+          if (onSelectTopicForPractice) {
+            onSelectTopicForPractice(topic);
+          } else {
+            setActiveTab('questions');
+          }
+        }}
+        onNavigateToFlashcards={() => setActiveTab('flashcards')}
+        onNavigateToAIAssistant={(initialQuestion) => {
+          setActiveTab('ai-assistant');
+        }}
+      />
 
       {/* AI Sınav Koçu: Zayıf Nokta Analizi & Bir Sonraki Çalışma Konusu */}
       <AIStudyRecommendationCard
