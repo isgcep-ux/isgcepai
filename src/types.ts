@@ -141,3 +141,13 @@ export interface UserStats {
   topicMastery: Record<QuestionTopic, { correct: number; total: number }>;
   dailyActivity?: DailyActivityItem[];
 }
+
+export interface VoiceStudyNote {
+  id: string;
+  title: string;
+  content: string;
+  topic?: QuestionTopic | 'genel';
+  createdAt: string;
+  isPinned?: boolean;
+  tags?: string[];
+}

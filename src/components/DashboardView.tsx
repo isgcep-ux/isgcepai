@@ -30,6 +30,7 @@ import { PDFReportModal } from './PDFReportModal';
 import { ExamCountdownCard } from './ExamCountdownCard';
 import { DailyActivityPanel } from './DailyActivityPanel';
 import { DailyTipCard } from './DailyTipCard';
+import { VoiceNotesCard } from './VoiceNotesCard';
 
 interface DashboardViewProps {
   selectedExamType: ExamType;
@@ -229,7 +230,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         onStartPractice={() => setActiveTab('questions')}
       />
 
-      {/* Sınav Puan Gelişimi & Soru Çözme Hızı Çizgi Grafiği (Recharts LineChart) */}
+      {/* Deneme Sınavları Net Değişimi & İlerleme Çizgi Grafiği (Recharts LineChart) */}
       <ExamProgressChart
         userStats={userStats}
         onStartNewExam={() => setActiveTab('exam-simulator')}
@@ -268,6 +269,20 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         userStats={userStats}
         onExploreTopic={() => setActiveTab('questions')}
         onStartExam={() => setActiveTab('exam-simulator')}
+      />
+
+      {/* Sesli Çalışma Not Defteri (Web Speech API & LocalStorage) */}
+      <VoiceNotesCard
+        onNavigateToAIAssistant={(initialQuestion) => {
+          setActiveTab('ai-assistant');
+        }}
+        onSelectTopicForPractice={(topicKey) => {
+          if (onSelectTopicForPractice) {
+            onSelectTopicForPractice(topicKey);
+          } else {
+            setActiveTab('questions');
+          }
+        }}
       />
 
       {/* Main Grid: Günün Sorusu & Hızlı Eylemler */}
