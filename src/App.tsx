@@ -9,7 +9,33 @@ import { RegulationsView } from './components/RegulationsView';
 import { ChecklistsView } from './components/ChecklistsView';
 import { AiAssistantView } from './components/AiAssistantView';
 import { AiExplainModal } from './components/AiExplainModal';
-import { ExamType, Question, UserStats } from './types';
+import { ExamType, Question, UserStats, DailyActivityItem } from './types';
+
+const getInitialDailyActivity = (): DailyActivityItem[] => {
+  const dayNames = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+  const today = new Date();
+  const pattern = [
+    { offset: 6, solved: 0, correct: 0, wrong: 0 },
+    { offset: 5, solved: 0, correct: 0, wrong: 0 },
+    { offset: 4, solved: 0, correct: 0, wrong: 0 },
+    { offset: 3, solved: 3, correct: 2, wrong: 1 },
+    { offset: 2, solved: 4, correct: 3, wrong: 1 },
+    { offset: 1, solved: 4, correct: 3, wrong: 1 },
+    { offset: 0, solved: 3, correct: 3, wrong: 0 },
+  ];
+  return pattern.map((p) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - p.offset);
+    return {
+      date: d.toISOString().split('T')[0],
+      dayName: p.offset === 0 ? 'Bugün' : dayNames[d.getDay()],
+      solved: p.solved,
+      correct: p.correct,
+      wrong: p.wrong,
+      target: 15,
+    };
+  });
+};
 
 const INITIAL_STATS: UserStats = {
   totalAnswered: 14,
@@ -19,6 +45,7 @@ const INITIAL_STATS: UserStats = {
   savedQuestionIds: ['q-1', 'q-3'],
   wrongQuestionIds: ['q-7'],
   favoriteCardIds: ['fc-1', 'fc-4', 'fc-5'],
+  dailyActivity: getInitialDailyActivity(),
   examHistory: [
     {
       examId: 'mock-1',
@@ -114,6 +141,39 @@ export default function App() {
         total: prevTopic.total + 1,
       };
 
+      // Update today's daily activity
+      const todayStr = new Date().toISOString().split('T')[0];
+      const existingActivity = prev.dailyActivity && prev.dailyActivity.length > 0
+        ? [...prev.dailyActivity]
+        : getInitialDailyActivity();
+      const todayIndex = existingActivity.findIndex((d) => d.date === todayStr);
+
+      let updatedDailyActivity: DailyActivityItem[];
+      if (todayIndex >= 0) {
+        updatedDailyActivity = existingActivity.map((item, idx) =>
+          idx === todayIndex
+            ? {
+                ...item,
+                solved: item.solved + 1,
+                correct: item.correct + (isCorrect ? 1 : 0),
+                wrong: item.wrong + (isCorrect ? 0 : 1),
+              }
+            : item
+        );
+      } else {
+        updatedDailyActivity = [
+          ...existingActivity.slice(-6),
+          {
+            date: todayStr,
+            dayName: 'Bugün',
+            solved: 1,
+            correct: isCorrect ? 1 : 0,
+            wrong: isCorrect ? 0 : 1,
+            target: 15,
+          },
+        ];
+      }
+
       return {
         ...prev,
         totalAnswered: prev.totalAnswered + 1,
@@ -124,6 +184,7 @@ export default function App() {
           ...prev.topicMastery,
           [question.topic]: updatedTopic,
         },
+        dailyActivity: updatedDailyActivity,
       };
     });
   };

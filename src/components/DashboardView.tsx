@@ -27,6 +27,7 @@ import { AchievementBadgesSection } from './AchievementBadgesSection';
 import { AIStudyRecommendationCard } from './AIStudyRecommendationCard';
 import { PDFReportModal } from './PDFReportModal';
 import { ExamCountdownCard } from './ExamCountdownCard';
+import { DailyActivityPanel } from './DailyActivityPanel';
 
 interface DashboardViewProps {
   selectedExamType: ExamType;
@@ -203,6 +204,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         onNavigateToAIAssistant={(initialQuestion) => {
           setActiveTab('ai-assistant');
         }}
+      />
+
+      {/* Son 7 Günlük Soru Çözme Aktivitesi & Alışkanlık Trendi Paneli (Recharts Bar & Area) */}
+      <DailyActivityPanel
+        userStats={userStats}
+        onStartPractice={() => setActiveTab('questions')}
       />
 
       {/* Sınav Puan Gelişimi & Soru Çözme Hızı Çizgi Grafiği (Recharts LineChart) */}

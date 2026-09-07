@@ -96,6 +96,16 @@ export interface FieldChecklist {
   }[];
 }
 
+export interface DailyActivityItem {
+  date: string; // YYYY-MM-DD
+  dayName: string; // e.g. "Pzt", "Sal", "Çar"
+  fullDateLabel?: string; // e.g. "7 Eylül 2026"
+  solved: number;
+  correct: number;
+  wrong: number;
+  target?: number;
+}
+
 export interface UserStats {
   totalAnswered: number;
   totalCorrect: number;
@@ -115,4 +125,5 @@ export interface UserStats {
     passed: boolean;
   }[];
   topicMastery: Record<QuestionTopic, { correct: number; total: number }>;
+  dailyActivity?: DailyActivityItem[];
 }
